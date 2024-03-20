@@ -4,16 +4,15 @@ import java.util.Base64;
 public class Main{
 
     public static void main(String[] args) throws Exception {
-        // Generate key pair
+     
         KeyPair keyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
 
-        // Original message
+       
         String message = "Hello, World!";
         System.out.println(message);
 
-        // Generate signature
         Signature signature = Signature.getInstance("SHA256withRSA");
         signature.initSign(privateKey);
         signature.update(message.getBytes());
@@ -23,11 +22,18 @@ public class Main{
         
         // message = "bye";
 
-        // Verify signature
+       
         Signature verifySignature = Signature.getInstance("SHA256withRSA");
         verifySignature.initVerify(publicKey);
         verifySignature.update(message.getBytes());
         boolean verified = verifySignature.verify(Base64.getDecoder().decode(signatureBase64));
-        System.out.println("Signature Verification: " + verified);
+        if(verified)
+        {
+            System.out.println("Digital Signature Verified");
+        }
+        else
+        {
+            System.out.println("Digital Signature not verfied");
+        }
     }
 }
